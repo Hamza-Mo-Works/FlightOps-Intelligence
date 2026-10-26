@@ -1,0 +1,79 @@
+# Python bytecode and build artifacts
+__pycache__/
+*.py[cod]
+*.so
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Environments and local Python tooling
+.venv/
+venv/
+env/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.p12
+*.pfx
+*.key
+*.secret
+*credentials*.json
+*service_account*.json
+
+# Databricks CLI local state (do not ignore databricks.yml or app.yaml)
+.databricks/
+.databrickscfg
+
+# Local MLflow runs / model binary artifacts
+mlruns/
+mlartifacts/
+models_local/
+*.xgb
+*.ubj
+*.pkl
+*.pickle
+*.joblib
+
+# Large local datasets and Delta output (keep source scripts and test fixtures)
+/data/
+/datasets/
+/raw_files/
+/exports/
+/checkpoints/
+/tmp/
+*.parquet
+*.parquet.crc
+*.delta
+*.db
+*.sqlite
+*.sqlite3
+
+# Jupyter local state
+.ipynb_checkpoints/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
