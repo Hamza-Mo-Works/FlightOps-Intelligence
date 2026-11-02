@@ -16,10 +16,16 @@ Initial source work and repository organization focused on:
 - **Bronze ingestion:** Establishing a raw Delta landing layer with ingestion metadata and traceability to the source files.
 - **Silver transformations:** Standardizing columns and data types, parsing dates, validating operational flags, handling nulls, and checking duplicates.
 - **Gold data modelling:** Defining daily flight, airport, and carrier performance aggregations for reporting and analysis.
-- **Governed metrics:** Establishing reusable business measures such as flight counts, cancellation rates, on-time arrival rates, and taxi-out averages.
-- **Application and ML exploration:** Organizing the supporting source notebooks and prototyping approaches to conversational queries and flight-delay risk modelling.
+- **Early reporting metrics:** Designing reusable flight counts, cancellation rates, on-time arrival rates, and taxi-out averages for the Gold reporting layer.
 
-This README is an **initial development overview**, not a feature-complete release statement. Implementation notes, tests, and additional technical documentation will be expanded as source modules are organized in the repository.
+## November 2, 2026 — Bronze validation and data documentation
+
+- Added a **read-only Bronze ingestion integration test** in `tests/test_bronze_ingestion.py` to check essential BTS source columns, ingestion metadata (`_ingestion_timestamp`, `_source_file`, `_source_system`), table non-emptiness and source attribution on a bounded sample.
+- Added `docs/bts_data_dictionary.md` describing the raw BTS fields, intended Silver mappings, nullable outcomes and data-quality considerations.
+
+The integration checks **require access to an active Databricks Spark session and the Bronze Delta table**; they have not been represented as passed without execution against that table. No model training or AI application release is claimed for this update.
+
+This README records the repository's early development scope, not a feature-complete release statement. More modules and documentation will be introduced as the repository develops.
 
 ## Architecture overview
 
@@ -52,12 +58,24 @@ SQL-based reporting and analytics
 | `02_BTS_Bronze_Ingestion.py` | Raw Delta ingestion |
 | `03_BTS_Silver_Transformation.py` | Cleaning, standardization, and validation |
 | `04_BTS_Gold_Analytics.py` | Operational aggregation datasets |
-| `05_Business_Semantic_Layer.py` | Metric definitions and business-domain mappings |
+| `tests/test_bronze_ingestion.py` | Read-only integration checks for Bronze input fields and metadata |
+| `docs/bts_data_dictionary.md` | BTS source-field reference and Silver mapping notes |
+| `05_Business_Semantic_Layer.py` | Metric definitions and business-domain mappings (subsequent phase) |
 | `13_Machine_Learning/` | Flight-delay ML development notebooks |
 | `ML_V2/` | Weather data and further model experiments |
 | `databricks_apps/` | Application source and deployment configuration |
 
-Source files may be added incrementally. Notebook exports are Python source files intended for use in a Databricks workspace.
+Additional source modules will be introduced in subsequent phases. Notebook exports are Python source files intended for use in a Databricks workspace.
+
+## Running the Bronze checks
+
+From a Python environment with `pytest`, PySpark, an active Databricks/Databricks Connect Spark session, and catalog `SELECT` access:
+
+```bash
+python -m pytest -q tests/test_bronze_ingestion.py
+```
+
+The tests skip when no active Spark session is available. You can override the target with `FLIGHTOPS_BRONZE_TABLE` if necessary. The tests are read-only and do not ingest data or modify Delta tables.
 
 ## Technology
 
