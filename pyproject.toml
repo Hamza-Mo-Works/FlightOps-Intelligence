@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "tests"]
+addopts = "-ra"
+markers = [
+  "spark: executes notebook expressions against a Spark session",
+  "databricks: reads existing Unity Catalog tables in an active Databricks session",
+]
